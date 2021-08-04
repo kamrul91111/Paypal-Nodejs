@@ -1,10 +1,13 @@
 const express = require('express');
 const paypal = require('paypal-rest-sdk');
+const morgan  = require('morgan');
+
+
 
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
-  'client_id': 'client_id',
-  'client_secret': 'client_secret'
+  'client_id': 'AflhaR8nwJwMxQMEYHoR50gEeiXem62socEJR0hPVkHUepCK3H3Bu8QN6tev6WjGw_rz6zt6GmmHg_HR',
+  'client_secret': 'EHCuKaemue--4ndUZzPEfXQzXqEY4ZDDolPcMb4MdkwbRB0EyPD9A7DRD5HuhH0J8Gv0vfG638taGvpI'
 });
 
 const app = express();
@@ -21,24 +24,24 @@ app.get('/pay/:amt', (req, res) => {
           "payment_method": "paypal"
       },
       "redirect_urls": {
-          "return_url": "http://localhost:4444/success",
-          "cancel_url": "http://localhost:4444/cancel"
+          "return_url": "http://192.168.15.9:4444/success",
+          "cancel_url": "http://192.168.15.9:4444/cancel"
       },
       "transactions": [{
           "item_list": {
               "items": [{
-                  "name": "Red Hat",
+                  "name": "Firebrand BBQ",
                   "sku": "001",
                   "price": amt,
-                  "currency": "USD",
-                  "quantity": 1
+                  "currency": "AUD",
+                  // "quantity": 1
               }]
           },
           "amount": {
-              "currency": "USD",
+              "currency": "AUD",
               "total": amt
           },
-          "description": "Hat for the best team ever"
+          "description": "Another order by a BBQ Legend!"
       }]
   };
   
@@ -64,7 +67,7 @@ app.get('/pay/:amt', (req, res) => {
       "payer_id": payerId,
       "transactions": [{
           "amount": {
-              "currency": "USD",
+              "currency": "AUD",
               "total": amt
           }
       }]
@@ -81,6 +84,10 @@ app.get('/pay/:amt', (req, res) => {
 });
 
 app.get('/cancel', (req, res) => res.send('Cancelled'));
+
+
+//for logging
+app.use(morgan('tiny'));
 
 const PORT = process.env.PORT || 4444 ;
 
