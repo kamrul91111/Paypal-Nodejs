@@ -16,32 +16,34 @@ var amt = null;
 
 app.get('/pay/:amt', (req, res) => {
    
+    // amount received by frontend
     amt = req.params.amt;
 
+    // config to paypal
     const create_payment_json = {
       "intent": "sale",
       "payer": {
           "payment_method": "paypal"
       },
       "redirect_urls": {
-          "return_url": "http://192.168.15.9:4444/success",
-          "cancel_url": "http://192.168.15.9:4444/cancel"
+          "return_url": "http://192.168.15.44:4444/success",
+          "cancel_url": "http://192.168.15.44:4444/cancel"
       },
       "transactions": [{
-          "item_list": {
-              "items": [{
-                  "name": "Firebrand BBQ",
-                  "sku": "001",
-                  "price": amt,
-                  "currency": "AUD",
-                  // "quantity": 1
-              }]
-          },
+          // "item_list": {
+          //     "items": [{
+          //         "name": "FirebrandBBQ",
+          //         "sku": "001",
+          //         "price": amt,
+          //         "currency": "USD",
+          //         "quantity": 1
+          //     }]
+          // },
           "amount": {
-              "currency": "AUD",
+              "currency": "USD",
               "total": amt
           },
-          "description": "Another order by a BBQ Legend!"
+          "description": "Firebrand BBQ Goodies!!"
       }]
   };
   
@@ -67,7 +69,7 @@ app.get('/pay/:amt', (req, res) => {
       "payer_id": payerId,
       "transactions": [{
           "amount": {
-              "currency": "AUD",
+              "currency": "USD",
               "total": amt
           }
       }]
